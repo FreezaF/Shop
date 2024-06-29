@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282c34;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(9, 50px);
+            grid-template-rows: repeat(6, 50px);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .slot {
+            width: 50px;
+            height: 50px;
+            background-color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #555;
+            position: relative;
+        }
+        .slot.special { background-color: #444; }
+        .slot.item { background-color: #000; cursor: pointer; color: white; text-align: center; }
+        .slot.gray-glass { background-color: #6b6b6b; }
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+            width: 200px;
+            font-family: 'Minecraft', sans-serif;
+        }
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+        .slot:hover .tooltip { display: block; }
+        .color-6 { color: #FFCC00; }
+        .color-7 { color: #AAAAAA; }
+        .color-e { color: #FFFF55; }
+    </style>
+</head>
+<body>
+
+<h1>Minecraft Shop</h1>
+<div class="inventory" id="inventory"></div>
+
+<script>
+    const inventory = document.getElementById('inventory');
+    const grayGlassPanes = new Set([0, 1, 2, 3, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]);
+
+    for (let i = 0; i < 54; i++) {
+        const slot = document.createElement('div');
+        slot.className = `slot ${grayGlassPanes.has(i) ? 'gray-glass' : i === 4 ? 'special' : ''}`;
+
+        if (i === 4) slot.textContent = 'Head';
+        if (i === 20) {
+            slot.className += ' item';
+            slot.innerHTML = 'Phoenix' +
+                `<div class="tooltip">
+                    <div class="color-6">Phoenix <span class="color-7">($1000)</span></div>
+                    <div class="color-e">When you die, you are revived</div>
+                    <div class="color-e">with half of your current health.</div>
+                    <div class="color-e">This ability activates only once per life.</div>
+                    <div class="color-7">Ability</div>
+                </div>`;
+        }
+
+        inventory.appendChild(slot);
+    }
+</script>
+
+</body>
+</html>
